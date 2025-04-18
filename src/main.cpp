@@ -1,81 +1,47 @@
+#include <cstdlib>
 #include <print>
 
 #include <raylib.h>
-#include <raymath.h>
+#include <toml++/toml.hpp>
 
-#include <hello.hpp>
-
-class Player {
-  Rectangle rect;
-  Vector2 vel;
-
-public:
-  Player(Rectangle rect) : rect(rect) {}
-
-  void update(const int speed) {
-    double delta_time = GetFrameTime();
-
-    Vector2 direction = {
-        static_cast<float>(IsKeyDown(KEY_D) - IsKeyDown(KEY_A)),
-        static_cast<float>(IsKeyDown(KEY_S) - IsKeyDown(KEY_W))};
-    Vector2 direction_normalized = Vector2Normalize(direction);
-
-    vel.x = speed * delta_time * direction_normalized.x;
-    vel.y = speed * delta_time * direction_normalized.y;
-
-    rect.x += vel.x;
-    rect.y += vel.y;
-  }
-
-  void draw(Color color) const { DrawRectangleRec(rect, color); }
-};
+#include <config.hpp>
+#include <snake.hpp>
 
 int main() {
-  const char *hello = hello_good();
-  std::println("{}", hello);
+  auto config_result = toml::parse_file("config.toml");
+  if (!config_result) {
+    TraceLog(LOG_ERROR, "Configuration file `config.toml` not found: %s",
+             config_result.error().description());
+    return EXIT_FAILURE;
+  }
 
-  hello = hello_bad();
-  std::println("{}", hello);
+  Config config(config_result.table());
 
-  char *hello2 = hello_bad();
-  std::println("{}", hello2);
+  Snake snake(config.snake.position_initial, config.snake.length_initial,
+              config.snake.direction_initial);
 
-  hello2[7] = 'D';
-  std::println("{}", hello2);
+  std::ranges::for_each(snake.get_body(), [](const Vector2 segment) {
+    std::print("({},{}) ", segment.x, segment.y);
+  });
+  std::println();
 
-  delete hello2;
-  hello2 = nullptr;
+  std::println("{}", sizeof(toml::table));
 
-  Player player({150, 150, 150, 150});
+  InitWindow(800, 800, "juniorpen01's Snake");
 
-  std::println("TraceLog exists");
+  Image cat_image = LoadImage("assets/cat.jpg");
 
-  Image cat = LoadImage("assets/cat.jpg");
+  ImageResize(&cat_image, 600, 600);
 
-  InitWindow(600, 600, "juniorpen01's Snake");
-
-  ImageResize(&cat, 600, 600);
-
-  Texture2D cat_texture = LoadTextureFromImage(cat);
-
-  SetWindowIcon(cat);
-
-  UnloadImage(cat);
+  Texture2D cat_texture = LoadTextureFromImage(cat_image);
 
   while (!WindowShouldClose()) {
-    player.update(300);
-
     BeginDrawing();
-    ClearBackground(BLACK);
 
-    DrawTexture(cat_texture, 0, 0, WHITE);
-
-    player.draw(RAYWHITE);
+    DrawTexture(cat_texture, 0, 0, RAYWHITE);
 
     EndDrawing();
   }
-
-  UnloadTexture(cat_texture);
 
   CloseWindow();
   return 0;

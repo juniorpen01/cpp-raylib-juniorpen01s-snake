@@ -14,6 +14,15 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(raylib)
 
+FetchContent_Declare(
+	tomlplusplus
+	GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
+	GIT_TAG v3.4.0
+	GIT_SHALLOW
+	SYSTEM
+)
+FetchContent_MakeAvailable(tomlplusplus)
+
 file(GLOB_RECURSE sources src/*.cpp)
 add_library(core ${sources})
 target_include_directories(core PUBLIC include)
@@ -23,7 +32,8 @@ target_compile_options(
 	$<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /permissive->
 )
 
-target_link_libraries(core raylib)
+target_link_libraries(core raylib tomlplusplus::tomlplusplus)
+target_compile_definitions(core PUBLIC TOML_EXCEPTIONS=0)
 
 add_executable(${EXE_NAME} src/main.cpp)
 target_link_libraries(${EXE_NAME} core)
