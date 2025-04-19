@@ -12,16 +12,17 @@
 class Snake {
   std::deque<Vector2> body;
   std::optional<Direction> direction;
-  std::optional<Vector2> last_previous;
+  Vector2 position_grow;
 
 public:
   constexpr Snake(const Vector2 position_initial, const int length_initial,
                   const Direction direction_initial)
-      : direction(direction_initial), last_previous(std::nullopt) {
+      : direction(direction_initial) {
     for (int i = 0; i < length_initial; ++i) {
       body.push_back(position_initial -
                      Vector2Scale(direction_initial.into_vector2(), i));
     }
+    position_grow = body.back() - direction_initial.into_vector2();
   }
 
   constexpr const std::deque<Vector2> &get_body() const { return body; }
@@ -30,13 +31,13 @@ public:
     return direction;
   }
 
-  constexpr const std::optional<Vector2> get_last_previous() const {
-    return last_previous;
+  constexpr const std::optional<Vector2> get_position_grow() const {
+    return position_grow;
   }
 
   constexpr void set_direction(std::optional<Direction> direction) {
     if (direction) {
-      if (this->direction != -(*direction))
+      if (this->direction != -direction.value())
         this->direction = direction;
     } else {
       this->direction = direction;
@@ -44,11 +45,17 @@ public:
   }
 
   constexpr void move() {
-    last_previous = body.back();
     if (direction) {
+      position_grow = body.back();
       body.pop_back();
       body.push_front(body.front() + direction->into_vector2());
     }
+  }
+
+  constexpr void grow() {
+    Vector2 foo = position_grow - body.back();
+    body.push_back(position_grow);
+    position_grow += foo;
   }
 };
 

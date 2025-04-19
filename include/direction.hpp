@@ -2,6 +2,7 @@
 #define DIRECTION_HPP
 
 #include <raylib.h>
+#include <raymath.h>
 
 enum class Dir { Left, Down, Up, Right };
 

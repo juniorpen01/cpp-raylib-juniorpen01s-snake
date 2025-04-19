@@ -15,7 +15,7 @@ int main() {
   // NOTE: do not delete lmfao
   InitWindow(800, 800, "juniorpen01's Snake");
 
-  SetTargetFPS(5);
+  SetTargetFPS(1);
 
   Image cat_image = LoadImage("assets/cat.jpg");
 
@@ -24,6 +24,23 @@ int main() {
   Texture cat_texture = LoadTextureFromImage(cat_image);
 
   UnloadImage(cat_image);
+
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
+  snake2.move();
 
   while (!WindowShouldClose()) {
     std::optional<Direction> direction = []() -> std::optional<Direction> {
@@ -40,10 +57,10 @@ int main() {
     }();
 
     if (direction) {
-      snake2.set_direction(direction);
+      // snake2.set_direction(direction);
     }
 
-    snake2.move();
+    snake2.grow();
 
     BeginDrawing();
 

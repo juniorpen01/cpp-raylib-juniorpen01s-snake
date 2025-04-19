@@ -3,6 +3,7 @@
 
 #include <doctest/doctest.h>
 
+#include <raylib.h>
 #include <snake.hpp>
 #include <vector2.hpp>
 
@@ -58,9 +59,10 @@ TEST_CASE(
 // TODO: 3
 TEST_CASE(
     "Snake of initial position (6, 0), initial length 5, initial direction "
-    "down has no last and upon move left has last (6, -4)") {
+    "down has grow position (6, -5) and upon move left has grow position (6, "
+    "-4)") {
   Snake snake({6, 0}, 5, Dir::Down);
-  CHECK(!snake.get_last_previous());
+  CHECK_EQ(snake.get_position_grow(), Vector2(6, -5));
   snake.move();
-  CHECK_EQ(*snake.get_last_previous(), Vector2(6, -4));
+  CHECK_EQ(snake.get_position_grow(), Vector2(6, -4));
 }
