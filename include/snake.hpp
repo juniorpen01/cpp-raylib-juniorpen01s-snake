@@ -9,9 +9,6 @@
 
 #include <direction.hpp>
 
-// TODO: Since it seems to make much more sense, move stateful direction away
-// from the snake class and opt in for (global?) state access since direction is
-// required for getting input anyway
 class Snake {
   std::deque<Vector2> body;
   std::optional<Direction> direction;

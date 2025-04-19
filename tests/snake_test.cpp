@@ -3,6 +3,7 @@
 #include <doctest/doctest.h>
 
 #include <snake.hpp>
+#include <vector2.hpp>
 
 TEST_CASE("Snake of initial position (18, 13), initial length 8, initial "
           "direction left has body (18, 13..=6)") {
@@ -13,16 +14,15 @@ TEST_CASE("Snake of initial position (18, 13), initial length 8, initial "
   }
 }
 
-// FAILED: The snake will move anyway to its initial direction, but a proposal
-// to refactor to move the direction field away from Snake has been made
 TEST_CASE("Snake of initial position (7, 7), initial length 4, initial "
-          "direction up upon move down still has body (7, 7..=10)") {
+          "direction up upon move down will continue to move up and has body "
+          "(7, 6..=10)") {
   Snake snake({7, 7}, 4, Dir::Up);
   snake.set_direction(Dir::Down);
   snake.move();
   for (const auto [i, segment] :
        std::views::zip(std::views::iota(0), snake.get_body())) {
-    CHECK_EQ(segment, Vector2(7, 7 + i));
+    CHECK_EQ(segment, Vector2(7, 6 + i));
   }
 }
 

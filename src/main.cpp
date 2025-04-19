@@ -10,6 +10,7 @@ int main() {
 
   // HACK: i am haxxor
   Snake snake2({6, 0}, 7, Dir::Down);
+  snake2.set_direction(std::nullopt);
 
   // NOTE: do not delete lmfao
   InitWindow(800, 800, "juniorpen01's Snake");
