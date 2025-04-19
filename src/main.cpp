@@ -4,43 +4,20 @@
 #include <vector2.hpp>
 
 int main() {
-  // INFO: imagine ideal body
-  const Snake snake({15, 15}, 5, Dir::Right);
-  snake.get_body();
+  Snake snake({15, 15}, 5, Dir::Right);
+  snake.set_direction(std::nullopt);
 
-  // HACK: i am haxxor
-  Snake snake2({6, 11}, 7, Dir::Down);
-  snake2.set_direction(std::nullopt);
-
-  // NOTE: do not delete lmfao
-  InitWindow(800, 800, "juniorpen01's Snake");
-
-  SetTargetFPS(1);
+  // FoodSignal<Snake> food_signal;
+  // food_signal.connect(snake);
 
   Image cat_image = LoadImage("assets/cat.jpg");
-
   ImageResize(&cat_image, 800, 800);
 
+  InitWindow(800, 800, "juniorpen01's Snake");
+  SetTargetFPS(2);
+
   Texture cat_texture = LoadTextureFromImage(cat_image);
-
   UnloadImage(cat_image);
-
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
-  snake2.move();
 
   while (!WindowShouldClose()) {
     std::optional<Direction> direction = []() -> std::optional<Direction> {
@@ -57,16 +34,17 @@ int main() {
     }();
 
     if (direction) {
-      // snake2.set_direction(direction);
+      snake.set_direction(direction);
     }
 
-    snake2.grow();
+    snake.move();
+    snake.grow();
 
     BeginDrawing();
 
     DrawTexture(cat_texture, 0, 0, RAYWHITE);
 
-    for (const Vector2 segment : snake2.get_body()) {
+    for (const Vector2 segment : snake.get_body()) {
       std::println("{}", segment);
       DrawRectangle(40 * segment.x, 40 * segment.y, 40, 40, BLUE);
     }

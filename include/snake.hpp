@@ -31,9 +31,9 @@ public:
     return direction;
   }
 
-  constexpr const std::optional<Vector2> get_position_grow() const {
-    return position_grow;
-  }
+  constexpr const Vector2 get_position() const { return body.front(); }
+
+  constexpr const Vector2 get_position_grow() const { return position_grow; }
 
   constexpr void set_direction(std::optional<Direction> direction) {
     if (direction) {
@@ -57,6 +57,8 @@ public:
     body.push_back(position_grow);
     position_grow += foo;
   }
+
+  constexpr void on_food_eaten() { grow(); }
 };
 
 #endif
