@@ -9,7 +9,7 @@ int main() {
   snake.get_body();
 
   // HACK: i am haxxor
-  Snake snake2({6, 0}, 7, Dir::Down);
+  Snake snake2({6, 11}, 7, Dir::Down);
   snake2.set_direction(std::nullopt);
 
   // NOTE: do not delete lmfao

@@ -1,3 +1,4 @@
+#include "direction.hpp"
 #include <ranges>
 
 #include <doctest/doctest.h>
@@ -52,4 +53,14 @@ TEST_CASE(
            std::views::iota(0), snake.get_body() | std::views::drop(2))) {
     CHECK_EQ(segment, Vector2(6, -i));
   }
+}
+
+// TODO: 3
+TEST_CASE(
+    "Snake of initial position (6, 0), initial length 5, initial direction "
+    "down has no last and upon move left has last (6, -4)") {
+  Snake snake({6, 0}, 5, Dir::Down);
+  CHECK(!snake.get_last_previous());
+  snake.move();
+  CHECK_EQ(*snake.get_last_previous(), Vector2(6, -4));
 }
