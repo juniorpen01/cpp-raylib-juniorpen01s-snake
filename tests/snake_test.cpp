@@ -1,11 +1,8 @@
-#include "direction.hpp"
 #include <ranges>
 
 #include <doctest/doctest.h>
 
-#include <raylib.h>
 #include <snake.hpp>
-#include <vector2.hpp>
 
 TEST_CASE("Snake of initial position (18, 13), initial length 8, initial "
           "direction left has body (18, 13..=6)") {

@@ -32,7 +32,7 @@ target_compile_options(
 	$<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /permissive->
 )
 
-target_link_libraries(core raylib tomlplusplus::tomlplusplus)
+target_link_libraries(core stdc++exp raylib tomlplusplus::tomlplusplus)
 target_compile_definitions(core PUBLIC TOML_EXCEPTIONS=0)
 
 add_executable(${EXE_NAME} src/main.cpp)
@@ -60,6 +60,7 @@ if(BUILD_TESTING)
 			${test_source_name}
 			PRIVATE
 			DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+			WIN32_LEAN_AND_MEAN
 		)
 		target_link_libraries(${test_source_name} core doctest::doctest)
 		add_test(NAME ${test_source_name} COMMAND ${test_source_name})

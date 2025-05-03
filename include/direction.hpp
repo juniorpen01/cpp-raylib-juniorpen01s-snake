@@ -1,6 +1,8 @@
 #ifndef DIRECTION_HPP
 #define DIRECTION_HPP
 
+#include <stdexcept>
+
 #include <raylib.h>
 #include <raymath.h>
 
@@ -22,6 +24,8 @@ public:
       return {0, -1};
     case Dir::Right:
       return {1, 0};
+    default:
+      throw std::invalid_argument("Direction variant not found");
     }
   }
 
@@ -35,6 +39,8 @@ public:
       return Dir::Down;
     case Dir::Right:
       return Dir::Left;
+    default:
+      throw std::invalid_argument("Direction variant not found");
     }
   }
 

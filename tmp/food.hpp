@@ -7,12 +7,14 @@
 
 class Food {
   Vector2 position;
-  Signal signal;
+  Signal<> signal;
 
 public:
-  constexpr Food(Vector2 position) : position(position) {}
+  Food(Vector2 position) : position(position) {}
 
   constexpr void set_position(Vector2 position) { this->position = position; }
+
+  void connect(const std::function<void()> slot) { signal.connect(slot); }
 };
 
 #endif

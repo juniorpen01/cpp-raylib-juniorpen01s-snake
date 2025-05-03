@@ -1,2 +1,3 @@
-# C++ Template
-A C++ CMake project template.
+# juniorpen01's Snake
+
+A C++ snake game.

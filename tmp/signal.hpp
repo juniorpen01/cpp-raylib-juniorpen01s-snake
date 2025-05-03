@@ -1,4 +1,3 @@
-
 #ifndef SIGNAL_HPP
 #define SIGNAL_HPP
 
@@ -7,10 +6,10 @@
 
 template <typename... Args> class Signal {
   using Slot = const std::function<void(const Args...)>;
-  const std::vector<Slot> listeners;
+  std::vector<Slot> listeners;
 
 public:
-  constexpr void connect(const Slot slot) const {
+  constexpr void connect(const Slot slot) {
     listeners.emplace_back(std::move(slot));
   }
 

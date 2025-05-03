@@ -1,5 +1,7 @@
 #include <print>
 
+// #include <food.hpp>
+// #include <signal.hpp>
 #include <snake.hpp>
 #include <vector2.hpp>
 
@@ -7,8 +9,8 @@ int main() {
   Snake snake({15, 15}, 5, Dir::Right);
   snake.set_direction(std::nullopt);
 
-  // FoodSignal<Snake> food_signal;
-  // food_signal.connect(snake);
+  // Food food({1, 1});
+  // food.connect([&snake]() { snake.grow(); });
 
   Image cat_image = LoadImage("assets/cat.jpg");
   ImageResize(&cat_image, 800, 800);
@@ -38,7 +40,6 @@ int main() {
     }
 
     snake.move();
-    snake.grow();
 
     BeginDrawing();
 
