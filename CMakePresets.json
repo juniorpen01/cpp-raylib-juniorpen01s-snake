@@ -1,11 +1,6 @@
 {
-  "$schema": "https://cmake.org/cmake/help/latest/_downloads/3e2d73bff478d88a7de0de736ba5e361/schema.json",
-  "version": 10,
-  "cmakeMinimumRequired": {
-    "major": 4,
-    "minor": 0,
-    "patch": 1
-  },
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 25, "patch": 1 },
   "configurePresets": [
     {
       "name": "default",
@@ -13,11 +8,10 @@
       "generator": "Ninja",
       "binaryDir": "build/${presetName}",
       "cacheVariables": {
-        "CMAKE_POLICY_VERSION_MINIMUM": "3.5",
-        "CMAKE_CXX_STANDARD": "23",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": true,
-        "CMAKE_CXX_EXTENSIONS": false,
-        "FETCHCONTENT_UPDATES_DISCONNECTED": true
+        "CMAKE_CXX_EXTENSIONS": false
       }
     },
     {
@@ -49,17 +43,11 @@
   "testPresets": [
     {
       "name": "debug",
-      "configurePreset": "debug",
-      "output": {
-        "outputOnFailure": true
-      }
+      "configurePreset": "debug"
     },
     {
       "name": "release",
-      "configurePreset": "release",
-      "output": {
-        "outputOnFailure": true
-      }
+      "configurePreset": "release"
     }
   ]
 }

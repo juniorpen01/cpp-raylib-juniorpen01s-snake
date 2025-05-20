@@ -1,68 +1,60 @@
-cmake_minimum_required(VERSION 4.0.1)
-project(Juniorpen01sSnake CXX)
+cmake_minimum_required(VERSION 3.25.1)
+project(
+  Juniorpen01sTemplate
+  LANGUAGES CXX
+  VERSION 0.1.0
+  DESCRIPTION "juniorpen01's CMake C++ project template."
+  HOMEPAGE_URL https://github.com/juniorpen01/cpp-juniorpen01s-template)
 
-set(EXE_NAME juniorpen01s_snake)
+add_executable(juniorpen01s_template src/main.cpp)
+target_link_libraries(juniorpen01s_template PRIVATE juniorpen01s_template::core)
+
+add_custom_command(
+  TARGET juniorpen01s_template
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/res
+          $<TARGET_FILE_DIR:juniorpen01s_template>/res)
+
+add_library(juniorpen01s_template_core STATIC src/direction.cpp)
+add_library(juniorpen01s_template::core ALIAS juniorpen01s_template_core)
+target_include_directories(juniorpen01s_template_core PUBLIC include)
+target_link_libraries(juniorpen01s_template_core PUBLIC raylib fmt::fmt)
+target_compile_options(juniorpen01s_template_core
+                       PUBLIC -Weverything -Wno-c++98-compat -Werror)
+
+include(CTest)
+foreach(testSource IN ITEMS tests/direction.cpp)
+  cmake_path(GET testSource STEM testSourceName)
+  add_executable(${testSourceName} ${testSource})
+  add_test(NAME ${testSourceName} COMMAND ${testSourceName})
+  target_link_libraries(${testSourceName} PRIVATE juniorpen01s_template::core
+                                                  doctest)
+  target_compile_definitions(${testSourceName}
+                             PRIVATE DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN)
+endforeach()
 
 include(FetchContent)
 
 FetchContent_Declare(
-	raylib
-	GIT_REPOSITORY https://github.com/raysan5/raylib.git
-	GIT_TAG 5.5
-	GIT_SHALLOW
-	SYSTEM
-)
+  raylib
+  GIT_REPOSITORY https://github.com/raysan5/raylib
+  GIT_TAG 5.5
+  GIT_SHALLOW ON
+  SYSTEM)
 FetchContent_MakeAvailable(raylib)
 
 FetchContent_Declare(
-	tomlplusplus
-	GIT_REPOSITORY https://github.com/marzer/tomlplusplus.git
-	GIT_TAG v3.4.0
-	GIT_SHALLOW
-	SYSTEM
-)
-FetchContent_MakeAvailable(tomlplusplus)
-
-file(GLOB_RECURSE sources src/*.cpp)
-add_library(core ${sources})
-target_include_directories(core PUBLIC include)
-target_compile_options(
-	core PUBLIC
-	$<$<CXX_COMPILER_ID:GNU,Clang>:-Wall -Wextra -Wpedantic -Werror>
-	$<$<CXX_COMPILER_ID:MSVC>:/W4 /WX /permissive->
-)
-
-target_link_libraries(core stdc++exp raylib tomlplusplus::tomlplusplus)
-target_compile_definitions(core PUBLIC TOML_EXCEPTIONS=0)
-
-add_executable(${EXE_NAME} src/main.cpp)
-target_link_libraries(${EXE_NAME} core)
-
-install(TARGETS ${EXE_NAME} RUNTIME DESTINATION bin)
-install(DIRECTORY assets DESTINATION bin/assets)
+  fmt
+  GIT_REPOSITORY https://github.com/fmtlib/fmt
+  GIT_TAG 11.2.0
+  GIT_SHALLOW ON
+  SYSTEM)
+FetchContent_MakeAvailable(fmt)
 
 FetchContent_Declare(
-	doctest
-	GIT_REPOSITORY https://github.com/doctest/doctest.git
-	GIT_TAG v2.4.11
-	GIT_SHALLOW
-	SYSTEM
-)
+  doctest
+  GIT_REPOSITORY https://github.com/doctest/doctest
+  GIT_TAG v2.4.12
+  GIT_SHALLOW ON
+  SYSTEM)
 FetchContent_MakeAvailable(doctest)
-
-include(CTest)
-if(BUILD_TESTING)
-	file(GLOB_RECURSE test_sources tests/*_test.cpp)
-	foreach(test_source IN LISTS test_sources)
-		cmake_path(GET test_source STEM test_source_name)
-		add_executable(${test_source_name} ${test_source})
-		target_compile_definitions(
-			${test_source_name}
-			PRIVATE
-			DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-			WIN32_LEAN_AND_MEAN
-		)
-		target_link_libraries(${test_source_name} core doctest::doctest)
-		add_test(NAME ${test_source_name} COMMAND ${test_source_name})
-	endforeach()
-endif()

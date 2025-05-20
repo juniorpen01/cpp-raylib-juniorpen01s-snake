@@ -1,5 +1,0 @@
-[snake]
-position_initial.x = 10
-position_initial.y = 10
-length_initial = 5
-direction_initial = 'Right'

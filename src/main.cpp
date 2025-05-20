@@ -1,60 +1,31 @@
-#include <print>
+#include <fmt/core.h>
+#include <raylib.h>
 
-// #include <food.hpp>
-// #include <signal.hpp>
-#include <snake.hpp>
-#include <vector2.hpp>
+int main(void) {
+  // TODO: Add more stuff
+  // NOTE: This was done to do more stuff
+  // WARN: This may do more stuff
+  // HACK: Doing some hacking...
+  // FIX: No idea how to do more stuff
+  // PERF: This does less stuff as time increases
+  // TEST: Null pointer was dereferenced
+  fmt::println("hello juniorpen01s template");
 
-int main() {
-  Snake snake({15, 15}, 5, Dir::Right);
-  snake.set_direction(std::nullopt);
+  InitWindow(800, 800, "juniorpen01's Template");
 
-  // Food food({1, 1});
-  // food.connect([&snake]() { snake.grow(); });
+  Image cat_img = LoadImage("res/cat.jpg");
+  ImageResize(&cat_img, 800, 800);
 
-  Image cat_image = LoadImage("assets/cat.jpg");
-  ImageResize(&cat_image, 800, 800);
+  Texture cat = LoadTextureFromImage(cat_img);
 
-  InitWindow(800, 800, "juniorpen01's Snake");
-  SetTargetFPS(2);
-
-  Texture cat_texture = LoadTextureFromImage(cat_image);
-  UnloadImage(cat_image);
+  UnloadImage(cat_img);
 
   while (!WindowShouldClose()) {
-    std::optional<Direction> direction = []() -> std::optional<Direction> {
-      if (IsKeyPressed(KEY_A) || IsKeyPressed(KEY_LEFT))
-        return Dir::Left;
-      if (IsKeyPressed(KEY_S) || IsKeyPressed(KEY_DOWN))
-        return Dir::Down;
-      if (IsKeyPressed(KEY_W) || IsKeyPressed(KEY_UP))
-        return Dir::Up;
-      if (IsKeyPressed(KEY_D) || IsKeyPressed(KEY_RIGHT))
-        return Dir::Right;
-      else
-        return std::nullopt;
-    }();
-
-    if (direction) {
-      snake.set_direction(direction);
-    }
-
-    snake.move();
-
     BeginDrawing();
-
-    DrawTexture(cat_texture, 0, 0, RAYWHITE);
-
-    for (const Vector2 segment : snake.get_body()) {
-      std::println("{}", segment);
-      DrawRectangle(40 * segment.x, 40 * segment.y, 40, 40, BLUE);
-    }
-
+    DrawTexture(cat, 0, 0, RAYWHITE);
     EndDrawing();
   }
 
-  UnloadTexture(cat_texture);
-
+  UnloadTexture(cat);
   CloseWindow();
-  return 0;
 }
